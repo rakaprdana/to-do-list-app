@@ -1,14 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".component.InputFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/iv_back_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Isi kegiatanmu hari ini!"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back_arrow"
+        app:layout_constraintStart_toEndOf="@id/iv_back_arrow"
+        app:layout_constraintTop_toTopOf="@id/iv_back_arrow" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_form_input"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/custom_bg_list"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="@id/iv_back_arrow"
+        app:layout_constraintTop_toBottomOf="@id/iv_back_arrow">
+
+        <TextView
+            android:id="@+id/tv_name_list_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kegiatan hari ini"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_name_list"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginVertical="4dp"
+            android:background="@drawable/textfield_bg"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_list_label" />
+
+        <TextView
+            android:id="@+id/tv_dateline_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="Tenggat"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_name_list" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_dateline"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/textfield_bg"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_dateline_label" />
+
+        <TextView
+            android:id="@+id/tv_description_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="Deskripsi Kegiatan"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_dateline" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_description"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/textfield_bg"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_description_label" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Simpan"
+        android:textStyle="bold"
+        app:backgroundTint="@color/btn_save"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="@id/cl_form_input"
+        app:layout_constraintTop_toBottomOf="@id/cl_form_input"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_discard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Hapus"
+        app:backgroundTint="@color/btn_discard"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_save"
+        app:layout_constraintEnd_toStartOf="@id/btn_save"
+        app:layout_constraintTop_toBottomOf="@id/cl_form_input"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

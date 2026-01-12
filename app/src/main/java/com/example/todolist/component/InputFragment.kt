@@ -5,29 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import com.example.todolist.R
+import com.example.todolist.common.TODOList
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import java.lang.Exception
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [InputFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class InputFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val btnBack by lazy { view?.findViewById<ImageView>(R.id.iv_back_arrow) }
+    private val inputNameList by lazy { view?.findViewById<TextInputEditText>(R.id.input_name_list) }
+    private val inputDate by lazy { view?.findViewById<TextInputEditText>(R.id.input_dateline) }
+    private val inputDescription by lazy { view?.findViewById<TextInputEditText>(R.id.input_description) }
+    private val btnDiscard by lazy { view?.findViewById<MaterialButton>(R.id.btn_discard) }
+    private val btnSave by lazy { view?.findViewById<MaterialButton>(R.id.btn_save) }
+    private val toDoListData = mutableListOf<TODOList>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        toDoListData.addAll(
+            arguments?.getParcelableArray("toDoListData")
+                ?.toMutableList() as MutableList<TODOList>
+        )
     }
 
     override fun onCreateView(
@@ -38,23 +41,64 @@ class InputFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_input, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment InputFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            InputFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        btnDiscard?.setOnClickListener {
+            discardData()
+        }
+        btnSave?.setOnClickListener {
+            if (isEntryValid()) {
+                saveData()
+            } else {
+                showToast("Mohon lengkapi formulirnya")
             }
+        }
+        handleOnBackPressed()
+        btnBack?.setOnClickListener { backToMainFragment() }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun isEntryValid(): Boolean {
+        return !(inputNameList?.text.toString().isBlank() || inputDate?.text.toString()
+            .isBlank() || inputDescription?.text.toString().isBlank())
+    }
+
+    private fun discardData() {
+        inputNameList?.setText("")
+        inputDate?.setText("")
+        inputDescription?.setText("")
+    }
+
+    private fun saveData() {
+        val newDataEntry = TODOList(
+            name = inputNameList?.text.toString(),
+            dateline = inputDate?.text.toString(),
+            description = inputDescription?.text.toString()
+        )
+        try {
+            toDoListData.add(newDataEntry)
+            discardData()
+            showToast("Jadwal tersimpan")
+        } catch (e: Exception) {
+            showToast("Gagal menyimpan jadwal")
+        }
+    }
+
+    private fun backToMainFragment() {
+        val resultData = toDoListData
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("resultKey", resultData)
+        findNavController().navigateUp()
+    }
+
+    private fun handleOnBackPressed() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                backToMainFragment()
+            }
+        }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, callback)
     }
 }

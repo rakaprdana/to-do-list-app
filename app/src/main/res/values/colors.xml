@@ -8,4 +8,5 @@
     <color name="forebackground">#FFF8DE</color>
     <color name="sc_forebackground">#FFF2C6</color>
     <color name="btn_discard">#850E35</color>
+    <color name="btn_save">#79C797</color>
 </resources>
